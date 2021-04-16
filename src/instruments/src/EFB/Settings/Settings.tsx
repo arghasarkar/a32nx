@@ -103,8 +103,8 @@ const PlaneSettings = () => {
     };
 
     return (
-        <div className="bg-gray-800 rounded-xl px-6 py-4 shadow-lg overflow-x-hidden overflow-y-scroll h-efb">
-            <h1 className="text-xl font-medium text-white mb-3">Realism</h1>
+        <div className="bg-navy-lighter rounded-2xl p-6 shadow-lg overflow-x-hidden overflow-y-scroll h-efb">
+            <h1 className="text-xl font-medium text-white mb-4">Realism</h1>
 
             <div className="divide-y divide-gray-700 flex flex-col">
                 <div className="mb-3.5 flex flex-row justify-between items-center">
@@ -135,7 +135,7 @@ const PlaneSettings = () => {
                 </div>
             </div>
 
-            <h1 className="text-xl text-white font-medium mt-4 mb-3">ATSU/AOC</h1>
+            <h1 className="text-xl text-white font-medium my-4">ATSU/AOC</h1>
 
             <div className="divide-y divide-gray-700 flex flex-col">
                 <div className="mb-3.5 flex flex-row justify-between items-center">
@@ -179,7 +179,7 @@ const PlaneSettings = () => {
                 </div>
             </div>
 
-            <h1 className="text-xl text-white font-medium mt-4 mb-3">FMGC</h1>
+            <h1 className="text-xl text-white font-medium my-4">FMGC</h1>
 
             <div className="divide-y divide-gray-700 flex flex-col">
                 <div className="mb-3.5 flex flex-row justify-between items-center">
@@ -252,7 +252,7 @@ const PlaneSettings = () => {
                 </div>
             </div>
 
-            <h1 className="text-xl text-white font-medium mt-4 mb-3">CIDS</h1>
+            <h1 className="text-xl text-white font-medium my-4">CIDS</h1>
 
             <div className="divide-y divide-gray-700 flex flex-col">
                 <div className="mb-3.5 flex flex-row justify-between items-center">
@@ -280,7 +280,7 @@ const SoundSettings = () => {
     const [windVolume, setWindVolume] = useSimVarSyncedPersistentProperty('L:A32NX_SOUND_INTERIOR_WIND', 'number', 'SOUND_INTERIOR_WIND');
 
     return (
-        <div className="bg-gray-800 rounded-xl px-6 py-4 shadow-lg">
+        <div className="bg-navy-lighter rounded-2xl p-6 shadow-lg mb-6">
             <div className="divide-y divide-gray-700 flex flex-col">
                 <div className="mb-4 flex flex-row justify-between items-center">
                     <span>
@@ -319,7 +319,7 @@ const FlyPadSettings = () => {
     const [brightness, setBrightness] = useSimVarSyncedPersistentProperty('L:A32NX_EFB_BRIGHTNESS', 'number', 'EFB_BRIGHTNESS');
 
     return (
-        <div className="bg-gray-800 divide-y divide-gray-700 flex flex-col rounded-xl px-6 py-4 shadow-lg">
+        <div className="bg-navy-lighter divide-y divide-gray-700 flex flex-col rounded-xl p-6 shadow-2xl mb-6">
             <div className="flex flex-row justify-between items-center">
                 <span className="text-lg text-gray-300">Brightness</span>
                 <Slider className="w-60" value={brightness} onInput={(value) => setBrightness(value)} />
@@ -329,12 +329,12 @@ const FlyPadSettings = () => {
 };
 
 const IntegrationSettings = (props: {simbriefUsername, setSimbriefUsername}) => (
-    <div className="bg-gray-800 divide-y divide-gray-700 flex flex-col rounded-xl px-6 py-4 shadow-lg">
+    <div className="bg-navy-lighter divide-y divide-gray-700 flex flex-col rounded-2xl p-6 shadow-lg">
         <div className="flex flex-row justify-between items-center">
             <span className="text-lg text-gray-300">Simbrief Username</span>
             <input
                 type="text"
-                className="w-30 ml-1.5 px-5 py-1.5 text-xl text-gray-300 rounded-lg bg-navy-light border-2 border-navy-light focus-within:outline-none focus-within:border-teal-light-contrast"
+                className="w-30 px-5 py-1.5 text-xl text-gray-300 rounded-lg bg-navy-light border-2 border-navy-light focus-within:outline-none focus-within:border-teal-light-contrast"
                 value={props.simbriefUsername}
                 onChange={(event) => props.setSimbriefUsername(event.target.value)}
             />
@@ -343,25 +343,22 @@ const IntegrationSettings = (props: {simbriefUsername, setSimbriefUsername}) => 
 );
 
 const Settings = (props: {simbriefUsername, setSimbriefUsername}) => (
-    <div className="w-full h-full flex flex-col">
-        <div className="flex-grow m-6 rounded-xl flex flex-row">
-            <div className="w-1/2 pr-3">
-                <h1 className="text-2xl text-white mb-4">Plane Settings</h1>
+    <div className="w-full">
+        <h1 className="text-3xl pt-6 text-white">Settings</h1>
+        <div className="flex mt-6">
+            <div className="w-1/2 mr-3">
                 <PlaneSettings />
             </div>
-            <div className="w-1/2 pl-3">
-                <h1 className="text-2xl text-white mb-4">Audio Settings</h1>
+            <div className="w-1/2 ml-3">
                 <SoundSettings />
 
-                <h1 className="text-2xl text-white mt-5 mb-4">flyPad Settings</h1>
                 <FlyPadSettings />
 
-                <h1 className="text-2xl text-white mt-5 mb-4">Integration</h1>
                 <IntegrationSettings simbriefUsername={props.simbriefUsername} setSimbriefUsername={props.setSimbriefUsername} />
 
-                <h1 className="text-4xl text-center text-gray-700 pt-10">flyPadOS</h1>
-                <h1 className="text-xl text-center text-gray-600 py-2">v2.0.1-alpha</h1>
-                <h1 className="text-md text-center text-gray-700 py-2">Copyright 2020-2021, FlyByWire Simulations.</h1>
+                <h1 className="text-4xl text-center text-gray-400 mt-28">flyPadOS</h1>
+                <h1 className="text-xl text-center text-gray-500 my-2">v2.0.1-alpha</h1>
+                <h1 className="text-md text-center text-gray-500 my-2">Copyright 2020-2021, FlyByWire Simulations.</h1>
             </div>
         </div>
     </div>
