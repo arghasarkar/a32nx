@@ -224,12 +224,6 @@ const Efb = () => {
         case 4:
             return <Navigation />;
         case 5:
-            return (
-                <div className="w-full h-full">
-                    <p className="text-white font-medium mt-6 ml-4 text-3xl">Inop.</p>
-                </div>
-            );
-        case 6:
             return <Settings simbriefUsername={simbriefUsername} setSimbriefUsername={setSimbriefUsername} />;
         default:
             return (

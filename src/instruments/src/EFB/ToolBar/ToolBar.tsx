@@ -58,16 +58,11 @@ class ToolBar extends React.Component<ToolbarProps, ToolbarState> {
                                 <IconMap className="mx-auto" size={45} color="white" stroke={1} strokeLinejoin="miter" />
                             </a>
                         </li>
-                        <li className={this.state.activeIndex === 5 ? c.active : c.inactive}>
-                            <a onClick={() => this.handleClick(5)}>
-                                <IconTool className="mx-auto" size={45} color="white" stroke={1} strokeLinejoin="miter" />
-                            </a>
-                        </li>
                     </ul>
                 </div>
                 <div className="mb-6">
                     <div className="mx-6 border-t-2 border-gray-700 mt-6" />
-                    <div className={this.state.activeIndex === 6 ? `${c.active} mt-6` : `${c.inactive} mt-6`} onClick={() => this.handleClick(6)}>
+                    <div className={this.state.activeIndex === 5 ? `${c.active} mt-6` : `${c.inactive} mt-6`} onClick={() => this.handleClick(5)}>
                         <IconSettings className="mx-auto" size={45} color="white" stroke={1} strokeLinejoin="miter" />
                     </div>
                 </div>
