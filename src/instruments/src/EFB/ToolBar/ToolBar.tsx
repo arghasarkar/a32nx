@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconClipboard, IconMap, IconTool, IconCalculator, IconSettings, IconTruck } from '@tabler/icons';
+import { IconClipboard, IconMap, IconCalculator, IconSettings, IconTruck } from '@tabler/icons';
 import logo from '../Assets/fbw-logo.svg';
 
 type ToolbarProps = {
@@ -12,7 +12,7 @@ type ToolbarState = {
 
 const c = {
     active: 'py-4 bg-white bg-opacity-5 py-4 mx-5 rounded-lg mt-2',
-    inactive: 'hover:bg-white hover:bg-opacity-5 transition duration-500 py-4 mx-5 rounded-lg mt-2'
+    inactive: 'hover:bg-white hover:bg-opacity-5 transition duration-100 py-4 mx-5 rounded-lg mt-2',
 };
 
 class ToolBar extends React.Component<ToolbarProps, ToolbarState> {
