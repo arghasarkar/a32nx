@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Provider } from 'react-redux';
-import store from './Store';
-
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { usePersistentProperty } from '../Common/persistence';
-
 import NavigraphClient, { NavigraphContext } from './ChartsApi/Navigraph';
-
 import { getSimbriefData, IFuel, IWeights } from './SimbriefApi';
 import StatusBar from './StatusBar/StatusBar';
 import ToolBar from './ToolBar/ToolBar';
@@ -16,6 +13,7 @@ import Ground from './Ground/Ground';
 import Performance from './Performance/Performance';
 import Navigation from './Navigation/Navigation';
 import Settings from './Settings/Settings';
+import store from './Store';
 
 type TimeState = {
     currentTime: Date,
@@ -112,6 +110,7 @@ const emptySimbriefData: SimbriefData = {
 };
 
 const Efb = () => {
+    const history = useHistory();
     const [navigraph] = useState(() => new NavigraphClient());
     const [simbriefData, setSimbriefData] = useState<SimbriefData>(emptySimbriefData);
     const [simbriefUsername, setSimbriefUsername] = usePersistentProperty('SimbriefUsername');
@@ -121,6 +120,29 @@ const Efb = () => {
         timeSinceStart: '00:00',
     });
     const [currentPageIndex, setCurrentPageIndex] = useState<0 | 1 | 2 | 3 | 4 | 5 | 6>(0);
+
+    useEffect(() => {
+        switch (currentPageIndex) {
+        case 1:
+            history.push('/dispatch');
+            break;
+        case 2:
+            history.push('/ground');
+            break;
+        case 3:
+            history.push('/performance');
+            break;
+        case 4:
+            history.push('/navigation');
+            break;
+        case 5:
+            history.push('/settings');
+            break;
+        default:
+            history.push('/dashboard');
+            break;
+        }
+    }, [currentPageIndex]);
 
     const fetchSimbriefData = async () => {
         if (!simbriefUsername) {
@@ -195,46 +217,6 @@ const Efb = () => {
         setTimeState({ ...timeState, timeSinceStart });
     };
 
-    const currentPage = () => {
-        switch (currentPageIndex) {
-        case 1:
-            return (
-                <Dispatch
-                    loadsheet={simbriefData.loadsheet}
-                    weights={simbriefData.weights}
-                    fuels={simbriefData.fuels}
-                    units={simbriefData.units}
-                    arrivingAirport={simbriefData.arrivingAirport}
-                    arrivingIata={simbriefData.arrivingIata}
-                    departingAirport={simbriefData.departingAirport}
-                    departingIata={simbriefData.departingIata}
-                    altBurn={simbriefData.altBurn}
-                    altIcao={simbriefData.altIcao}
-                    altIata={simbriefData.altIata}
-                    tripTime={simbriefData.tripTime}
-                    contFuelTime={simbriefData.contFuelTime}
-                    resFuelTime={simbriefData.resFuelTime}
-                    taxiOutTime={simbriefData.taxiOutTime}
-                />
-            );
-        case 2:
-            return <Ground />;
-        case 3:
-            return <Performance />;
-        case 4:
-            return <Navigation />;
-        case 5:
-            return <Settings simbriefUsername={simbriefUsername} setSimbriefUsername={setSimbriefUsername} />;
-        default:
-            return (
-                <Dashboard
-                    simbriefData={simbriefData}
-                    fetchSimbrief={fetchSimbriefData}
-                />
-            );
-        }
-    };
-
     return (
         <Provider store={store}>
             <NavigraphContext.Provider value={navigraph}>
@@ -243,7 +225,45 @@ const Efb = () => {
                     <div className="flex flex-row">
                         <ToolBar setPageIndex={(index) => setCurrentPageIndex(index)} />
                         <div className="py-16 px-8 text-gray-700 bg-navy-regular h-screen w-screen">
-                            {currentPage()}
+                            <Switch>
+                                <Route path="/dashboard">
+                                    <Dashboard
+                                        simbriefData={simbriefData}
+                                        fetchSimbrief={fetchSimbriefData}
+                                    />
+                                </Route>
+                                <Route path="/dispatch">
+                                    <Dispatch
+                                        loadsheet={simbriefData.loadsheet}
+                                        weights={simbriefData.weights}
+                                        fuels={simbriefData.fuels}
+                                        units={simbriefData.units}
+                                        arrivingAirport={simbriefData.arrivingAirport}
+                                        arrivingIata={simbriefData.arrivingIata}
+                                        departingAirport={simbriefData.departingAirport}
+                                        departingIata={simbriefData.departingIata}
+                                        altBurn={simbriefData.altBurn}
+                                        altIcao={simbriefData.altIcao}
+                                        altIata={simbriefData.altIata}
+                                        tripTime={simbriefData.tripTime}
+                                        contFuelTime={simbriefData.contFuelTime}
+                                        resFuelTime={simbriefData.resFuelTime}
+                                        taxiOutTime={simbriefData.taxiOutTime}
+                                    />
+                                </Route>
+                                <Route path="/ground">
+                                    <Ground />
+                                </Route>
+                                <Route path="/performance">
+                                    <Performance />
+                                </Route>
+                                <Route path="/navigation">
+                                    <Navigation />
+                                </Route>
+                                <Route path="/settings">
+                                    <Settings simbriefUsername={simbriefUsername} setSimbriefUsername={setSimbriefUsername} />
+                                </Route>
+                            </Switch>
                         </div>
                     </div>
                 </div>
