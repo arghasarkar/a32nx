@@ -12,6 +12,7 @@ import NavigraphClient, {
 } from '../ChartsApi/Navigraph';
 import ChartFoxClient, { ChartFoxAirportCharts, ChartFoxChart } from '../ChartsApi/ChartFox';
 import navigraphLogo from '../Assets/navigraph-logo.svg';
+import { usePersistentProperty } from '../../Common/persistence';
 
 type Chart = NavigraphChart | ChartFoxChart;
 
@@ -57,17 +58,21 @@ type ChartDisplay = {
     dark: string
 }
 
-const Loading = () => (
-    <div className="flex flex-col items-center justify-center">
-        <p className="text-white text-xl">Loading...</p>
-        <button
-            className="w-48 mt-6 text-white bg-teal-light p-2 flex items-center justify-center rounded-lg focus:outline-none"
-            onClick={() => window.localStorage.setItem('refreshToken', '')}
-        >
-        Reset Refresh Token
-        </button>
-    </div>
-);
+const Loading = () => {
+    const [refreshToken, setRefreshToken] = usePersistentProperty('refreshToken', '');
+
+    return (
+        <div className="flex flex-col items-center justify-center">
+            <p className="text-white text-xl">Loading...</p>
+            <button
+                className="w-48 mt-6 text-white bg-teal-light p-2 flex items-center justify-center rounded-lg focus:outline-none"
+                onClick={() => setRefreshToken('')}
+            >
+            Reset Refresh Token
+            </button>
+        </div>
+    );
+};
 
 const AuthUi = () => {
     const { auth } = useNavigraph();
