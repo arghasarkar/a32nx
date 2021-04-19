@@ -223,8 +223,8 @@ const PlaneSettings = () => {
                 </div>
 
                 <div className="w-full pt-2 flex flex-row justify-between">
-                    <div className="pt-2 pr-4 flex-grow flex flex-row justify-between items-center">
-                        <span className="text-lg text-gray-300">Default Baro</span>
+                    <div className="pt-2 pr-3 flex-grow flex flex-row justify-between items-center">
+                        <span className="text-lg text-gray-300 mr-1">Default Baro</span>
                         <SelectGroup>
                             {defaultBaroButtons.map((button) => (
                                 <SelectItem
@@ -236,8 +236,8 @@ const PlaneSettings = () => {
                             ))}
                         </SelectGroup>
                     </div>
-                    <div className="pt-2 pl-4 flex-grow flex flex-row justify-between items-center">
-                        <span className="text-lg text-gray-300">Weight Unit</span>
+                    <div className="pt-2 pl-3 flex-grow flex flex-row justify-between items-center">
+                        <span className="text-lg text-gray-300 mr-1">Weight Unit</span>
                         <SelectGroup>
                             {weightUnitButtons.map((button) => (
                                 <SelectItem

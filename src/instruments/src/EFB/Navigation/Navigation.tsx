@@ -59,13 +59,13 @@ type ChartDisplay = {
 
 const Loading = () => (
     <div className="flex flex-col items-center justify-center">
-        <p className="text-white text-3xl">Loading...</p>
-        <span
-            className="text-teal-regular text-2xl"
+        <p className="text-white text-xl">Loading...</p>
+        <button
+            className="w-48 mt-6 text-white bg-teal-light p-2 flex items-center justify-center rounded-lg focus:outline-none"
             onClick={() => window.localStorage.setItem('refreshToken', '')}
         >
-            Reset Refresh Token
-        </span>
+        Reset Refresh Token
+        </button>
     </div>
 );
 
@@ -453,7 +453,7 @@ const NavigraphNav = (props: ChartsUiProps) => (
                         </>
                     )
                     : (
-                        <div className="flex items-center justify-center h-efb w-full bg-navy-lighter rounded-xl shadow-lg mr-4 overflow-x-hidden">
+                        <div className="flex items-center justify-center h-efb w-full bg-navy-lighter rounded-2xl shadow-lg mr-4 overflow-x-hidden">
                             <p className="text-3xl pt-6 text-white mb-6">Insufficient .env file</p>
                         </div>
                     )}
