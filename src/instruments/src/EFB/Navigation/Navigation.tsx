@@ -59,7 +59,7 @@ type ChartDisplay = {
 }
 
 const Loading = () => {
-    const [refreshToken, setRefreshToken] = usePersistentProperty('refreshToken', '');
+    const [refreshToken, setRefreshToken] = usePersistentProperty('NAVIGRAPH_REFRESH_TOKEN', '');
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -360,7 +360,7 @@ const ChartsUi = (props: ChartsUiProps) => {
                                 className="w-3/5 text-xl pb-1 mx-6 mt-6 bg-navy-lighter border-b-2 border-teal-light-contrast focus-within:outline-none focus-within:border-teal-medium"
                                 onChange={(event) => handleIcaoChange(event.target.value)}
                             />
-                            <div className="flex items-center w-full mt-5 h-9 bg-teal-light-contrast pl-7">
+                            <div className="flex items-center w-full mt-5 h-9 bg-teal-light-contrast px-6 py-2">
                                 {props.icao.length !== 4
                                     ? <span className="text-xl">No Airport Selected</span>
                                     : <span className="text-xl">{airportInfo.name}</span>}

@@ -86,7 +86,7 @@ export default class NavigraphClient {
 
     constructor() {
         if (NavigraphClient.sufficientEnv()) {
-            const token = NXDataStore.get('refreshToken');
+            const token = NXDataStore.get('NAVIGRAPH_REFRESH_TOKEN');
 
             if (token === undefined || token === null || token === '') {
                 this.authenticate();
@@ -135,7 +135,7 @@ export default class NavigraphClient {
                     this.refreshToken = refreshToken;
                     this.accessToken = r.access_token;
 
-                    NXDataStore.set('refreshToken', refreshToken);
+                    NXDataStore.set('NAVIGRAPH_REFRESH_TOKEN', refreshToken);
                 });
             }
         });
