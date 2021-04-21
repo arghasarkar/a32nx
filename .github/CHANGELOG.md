@@ -22,6 +22,15 @@
 1. [MISC] Fixed EVAC button animation - @tyler58546 (tyler58546)
 1. [ECAM] Improved alternating of igniters - @joseph-tobin (joseph#1001)
 1. [TEXTURE] Upscaled the existing FBW livery to 8K - @FoxinTale (Aubrey)
+1. [PFD] Reimplemented and improved PFD in react - @lukecologne (lukecologne#1156)
+1. [FBW] New custom fly-by-wire system - @aguther (Andreas Guther)
+1. [AUTOPILOT] New custom autopilot system - @aguther (Andreas Guther)
+1. [AUTOTHRUST] New custom autothrust system - @aguther (Andreas Guther)
+1. [ENGINE] New engine model with custom EGT and fuel flow logic - @Taz5150 (TazX [Z+2]#0405)
+1. [FLIGHTMODEL] New flight model adapted to new engine model - @donstim (donbikes#4084)
+1. [FLIGHTMODEL] Added separated flaps position for 1 and 1+F - @donstim (donbikes#4084), @aguther (Andreas Guther)
+1. [FLIGHTMODEL] Custom spoiler logic and realistic impact on flight model - @donstim (donbikes#4084), @aguther (Andreas Guther)
+1. [EFB] Added throttle calibration for autothrust system - @Saschl (saschl#9432)
 
 ## 0.6.0
 1. [CDU] Added WIND page - @tyler58546 (tyler58546)
