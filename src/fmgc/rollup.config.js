@@ -39,33 +39,25 @@ module.exports = {
             targets: [
                 {
                     src: `${__dirname}/src/utils/LzUtf8.js`,
-                    dest: `${__dirname}/../../A32NX/html_ui/JS/fmgc/`,
+                    dest: `${__dirname}/../../flybywire-aircraft-a320-neo/html_ui/JS/fmgc/`,
                 },
             ],
         }),
-        replace({
-            'process.env.NODE_ENV': JSON.stringify('production'),
-        }),
+        replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
         commonjs(),
         babel({
-            presets: ['@babel/preset-typescript', ['@babel/preset-env', {
-                targets: { browsers: ['safari 11'] },
-            }]],
+            presets: ['@babel/preset-typescript', ['@babel/preset-env', { targets: { browsers: ['safari 11'] } }]],
             plugins: [
                 '@babel/plugin-proposal-class-properties',
             ],
             extensions,
         }),
-        nodeResolve({
-            extensions,
-        }),
+        nodeResolve({ extensions }),
     ],
     external: ['MSFS', 'WorkingTitle'],
     output: {
-        file: `${__dirname}/../../A32NX/html_ui/JS/fmgc/bundle.js`,
-        globals: {
-            WorkingTitle: 'WorkingTitle',
-        },
+        file: `${__dirname}/../../flybywire-aircraft-a320-neo/html_ui/JS/fmgc/bundle.js`,
+        globals: { WorkingTitle: 'WorkingTitle' },
         format: 'umd',
         name: 'fpm',
     },
