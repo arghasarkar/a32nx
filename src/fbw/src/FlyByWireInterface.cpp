@@ -219,6 +219,10 @@ void FlyByWireInterface::setupLocalVariables() {
 
   idAutopilotAutothrustMode = make_unique<LocalVariable>("A32NX_AUTOPILOT_AUTOTHRUST_MODE");
 
+  // speeds
+  idSpeedAlphaProtection = make_unique<LocalVariable>("A32NX_SPEEDS_ALPHA_PROTECTION");
+  idSpeedAlphaMax = make_unique<LocalVariable>("A32NX_SPEEDS_ALPHA_MAX");
+
   // register L variables for flight guidance
   idFwcFlightPhase = make_unique<LocalVariable>("A32NX_FWC_FLIGHT_PHASE");
   idFmgcFlightPhase = make_unique<LocalVariable>("A32NX_FMGC_FLIGHT_PHASE");
@@ -430,7 +434,8 @@ bool FlyByWireInterface::updateAutopilotStateMachine(double sampleTime) {
 
   bool doDisconnect = false;
   if (autopilotStateMachineOutput.enabled_AP1 || autopilotStateMachineOutput.enabled_AP2) {
-    doDisconnect = fabs(simInput.inputs[0]) > 0.5 || fabs(simInput.inputs[1]) > 0.5 || fabs(simInput.inputs[2]) > 0.4;
+    doDisconnect = fabs(simInput.inputs[0]) > 0.5 || fabs(simInput.inputs[1]) > 0.5 || fabs(simInput.inputs[2]) > 0.4 ||
+                   flyByWireOutput.sim.data_computed.protection_ap_disc;
   }
 
   // update state machine ---------------------------------------------------------------------------------------------
@@ -946,14 +951,14 @@ bool FlyByWireInterface::updateFlyByWire(double sampleTime) {
     flyByWire.step();
 
     // when tracking mode is on do not write anything -----------------------------------------------------------------
-    FlyByWireModelClass::ExternalOutputs_FlyByWire_T flyByWireOutput = flyByWire.getExternalOutputs();
+    flyByWireOutput = flyByWire.getExternalOutputs().out;
 
-    if (flyByWireOutput.out.sim.data_computed.tracking_mode_on) {
+    if (flyByWireOutput.sim.data_computed.tracking_mode_on) {
       return true;
     }
 
     // object to write with trim
-    SimOutput output = {flyByWireOutput.out.output.eta_pos, flyByWireOutput.out.output.xi_pos, flyByWireOutput.out.output.zeta_pos};
+    SimOutput output = {flyByWireOutput.output.eta_pos, flyByWireOutput.output.xi_pos, flyByWireOutput.output.zeta_pos};
 
     // send data via sim connect
     if (!simConnectInterface.sendData(output)) {
@@ -961,9 +966,9 @@ bool FlyByWireInterface::updateFlyByWire(double sampleTime) {
       return false;
     }
 
-    if (flyByWireOutput.out.output.eta_trim_deg_should_write) {
+    if (flyByWireOutput.output.eta_trim_deg_should_write) {
       // object to write without trim
-      SimOutputEtaTrim output = {flyByWireOutput.out.output.eta_trim_deg};
+      SimOutputEtaTrim output = {flyByWireOutput.output.eta_trim_deg};
 
       // send data via sim connect
       if (!simConnectInterface.sendData(output)) {
@@ -972,9 +977,9 @@ bool FlyByWireInterface::updateFlyByWire(double sampleTime) {
       }
     }
 
-    if (flyByWireOutput.out.output.zeta_trim_pos_should_write) {
+    if (flyByWireOutput.output.zeta_trim_pos_should_write) {
       // object to write without trim
-      SimOutputZetaTrim output = {flyByWireOutput.out.output.zeta_trim_pos};
+      SimOutputZetaTrim output = {flyByWireOutput.output.zeta_trim_pos};
 
       // send data via sim connect
       if (!simConnectInterface.sendData(output)) {
@@ -982,6 +987,10 @@ bool FlyByWireInterface::updateFlyByWire(double sampleTime) {
         return false;
       }
     }
+
+    // update speeds
+    idSpeedAlphaProtection->set(flyByWireOutput.sim.data_speeds_aoa.v_alpha_prot_kn);
+    idSpeedAlphaMax->set(flyByWireOutput.sim.data_speeds_aoa.v_alpha_max_kn);
   } else {
     // send data to client data to be read by simulink
     ClientDataAutopilotLaws clientDataLaws = {autopilotLawsOutput.ap_on,
@@ -1032,8 +1041,8 @@ bool FlyByWireInterface::updateAutothrust(double sampleTime) {
         85,    // TOGA
         idFmgcFlexTemperature->get(),
         autopilotStateMachineOutput.autothrust_mode,
-        simData.is_mach_mode_active,  // mach mode
-        0,                            // alpha floor
+        simData.is_mach_mode_active,
+        flyByWireOutput.sim.data_computed.alpha_floor_command,
         autopilotStateMachineOutput.vertical_mode >= 30 && autopilotStateMachineOutput.vertical_mode <= 34,
         autopilotStateMachineOutput.vertical_mode == 40,
         autopilotStateMachineOutput.vertical_mode == 41,
@@ -1095,7 +1104,7 @@ bool FlyByWireInterface::updateAutothrust(double sampleTime) {
     autoThrustInput.in.input.flex_temperature_degC = idFmgcFlexTemperature->get();
     autoThrustInput.in.input.mode_requested = autopilotStateMachineOutput.autothrust_mode;
     autoThrustInput.in.input.is_mach_mode_active = simData.is_mach_mode_active;
-    autoThrustInput.in.input.alpha_floor_condition = 0;
+    autoThrustInput.in.input.alpha_floor_condition = flyByWireOutput.sim.data_computed.alpha_floor_command;
     autoThrustInput.in.input.is_approach_mode_active =
         autopilotStateMachineOutput.vertical_mode >= 30 && autopilotStateMachineOutput.vertical_mode <= 34;
     autoThrustInput.in.input.is_SRS_TO_mode_active = autopilotStateMachineOutput.vertical_mode == 40;

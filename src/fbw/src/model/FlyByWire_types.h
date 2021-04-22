@@ -194,7 +194,23 @@ typedef struct {
 typedef struct {
   real_T on_ground;
   real_T tracking_mode_on;
+  real_T high_aoa_prot_active;
+  real_T alpha_floor_command;
+  real_T protection_ap_disc;
 } base_data_computed;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_base_data_speeds_aoa_
+#define DEFINED_TYPEDEF_FOR_base_data_speeds_aoa_
+
+typedef struct {
+  real_T v_alpha_max_kn;
+  real_T alpha_max_deg;
+  real_T v_alpha_prot_kn;
+  real_T alpha_prot_deg;
+  real_T alpha_floor_deg;
+} base_data_speeds_aoa;
 
 #endif
 
@@ -205,6 +221,7 @@ typedef struct {
   base_time time;
   base_data data;
   base_data_computed data_computed;
+  base_data_speeds_aoa data_speeds_aoa;
   base_input input;
 } base_sim;
 
@@ -214,6 +231,8 @@ typedef struct {
 #define DEFINED_TYPEDEF_FOR_base_pitch_data_computed_
 
 typedef struct {
+  real_T eta_trim_deg_limit_lo;
+  real_T eta_trim_deg_limit_up;
   real_T delta_eta_deg;
   real_T in_flight;
   real_T in_rotation;

@@ -112,6 +112,8 @@ class PFD extends Component {
         const VS = getSimVar('L:A32NX_SPEEDS_VS', 'number');
         const VMax = getSimVar('L:A32NX_SPEEDS_VMAX', 'number');
         const VLs = getSimVar('L:A32NX_SPEEDS_VLS', 'number');
+        const ValphaProtection = getSimVar('L:A32NX_SPEEDS_ALPHA_PROTECTION', 'number');
+        const ValphaMax = getSimVar('L:A32NX_SPEEDS_ALPHA_MAX', 'number');
 
         let showSpeedBars = true;
         if (isOnGround) {
@@ -122,7 +124,7 @@ class PFD extends Component {
             this.barTimer += this.deltaTime / 1000;
         }
 
-        this.smoothSpeeds(this.deltaTime, VLs, VS * 1.1, VS * 1.03, VS);
+        this.smoothSpeeds(this.deltaTime, VLs, ValphaProtection, ValphaMax, VS);
 
         const armedVerticalBitmask = getSimVar('L:A32NX_FMA_VERTICAL_ARMED', 'number');
         const activeVerticalMode = getSimVar('L:A32NX_FMA_VERTICAL_MODE', 'enum');

@@ -342,6 +342,14 @@
     - vapp calculated for config full  whether A32NX_VSPEEDS_LANDING_CONF3 or not
     - is mach corrected
 
+- A32NX_SPEEDS_ALPHA_PROTECTION
+    - Number (knots)
+    - speed where alpha protection is reached with 1g
+
+- A32NX_SPEEDS_ALPHA_MAX
+    - Number (knots)
+    - speed where alpha max is reached with 1g
+
 - A32NX_TRK_FPA_MODE_ACTIVE
     - Bool
     - True if TRK/FPA mode is active
