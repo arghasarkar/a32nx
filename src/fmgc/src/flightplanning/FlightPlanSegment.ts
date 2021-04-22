@@ -25,16 +25,18 @@
  * A segment of a flight plan.
  */
 export class FlightPlanSegment {
-
-  /**
-   * Creates a new FlightPlanSegment.
-   * @param type The type of the flight plan segment.
-   * @param offset The offset within the original flight plan that
-   * the segment starts at.
-   * @param waypoints The waypoints in the flight plan segment.
-   */
-  constructor(public type: SegmentType, public offset: number, public waypoints: WayPoint[]) {
-  }
+    /**
+    * Creates a new FlightPlanSegment.
+    * @param type The type of the flight plan segment.
+    * @param offset The offset within the original flight plan that
+    * the segment starts at.
+    * @param waypoints The waypoints in the flight plan segment.
+    */
+    constructor(public type: SegmentType, public offset: number, public waypoints: WayPoint[]) {
+        this.type = type;
+        this.offset = offset;
+        this.waypoints = waypoints;
+    }
 
   /** An empty flight plan segment. */
   public static Empty: FlightPlanSegment = new FlightPlanSegment(-1, -1, []);

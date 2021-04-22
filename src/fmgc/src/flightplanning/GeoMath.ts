@@ -22,11 +22,10 @@
  * SOFTWARE.
  */
 
-import { WorldMagneticModel } from "./WorldMagneticModel";
+import { WorldMagneticModel } from './WorldMagneticModel';
 
 /** A class for geographical mathematics. */
 export class GeoMath {
-
   private static magneticModel = new WorldMagneticModel();
 
   /**
@@ -37,17 +36,17 @@ export class GeoMath {
    * @returns The calculated coordinates.
    */
   public static relativeBearingDistanceToCoords(course: number, distanceInNM: number, referenceCoordinates: LatLongAlt): LatLongAlt {
-    const courseRadians = course * Avionics.Utils.DEG2RAD;
-    const distanceRadians = (Math.PI / (180 * 60)) * distanceInNM;
+      const courseRadians = course * Avionics.Utils.DEG2RAD;
+      const distanceRadians = (Math.PI / (180 * 60)) * distanceInNM;
 
-    const refLat = referenceCoordinates.lat * Avionics.Utils.DEG2RAD;
-    const refLon = -(referenceCoordinates.long * Avionics.Utils.DEG2RAD);
+      const refLat = referenceCoordinates.lat * Avionics.Utils.DEG2RAD;
+      const refLon = -(referenceCoordinates.long * Avionics.Utils.DEG2RAD);
 
-    const lat = Math.asin(Math.sin(refLat) * Math.cos(distanceRadians) + Math.cos(refLat) * Math.sin(distanceRadians) * Math.cos(courseRadians));
-    const dlon = Math.atan2(Math.sin(courseRadians) * Math.sin(distanceRadians) * Math.cos(refLat), Math.cos(distanceRadians) - Math.sin(refLat) * Math.sin(lat));
-    const lon = Avionics.Utils.fmod(refLon - dlon + Math.PI, 2 * Math.PI) - Math.PI;
+      const lat = Math.asin(Math.sin(refLat) * Math.cos(distanceRadians) + Math.cos(refLat) * Math.sin(distanceRadians) * Math.cos(courseRadians));
+      const dlon = Math.atan2(Math.sin(courseRadians) * Math.sin(distanceRadians) * Math.cos(refLat), Math.cos(distanceRadians) - Math.sin(refLat) * Math.sin(lat));
+      const lon = Avionics.Utils.fmod(refLon - dlon + Math.PI, 2 * Math.PI) - Math.PI;
 
-    return new LatLongAlt(lat * Avionics.Utils.RAD2DEG, -(lon * Avionics.Utils.RAD2DEG));
+      return new LatLongAlt(lat * Avionics.Utils.RAD2DEG, -(lon * Avionics.Utils.RAD2DEG));
   }
 
   /**
@@ -57,7 +56,7 @@ export class GeoMath {
    * @returns The magnetic heading, corrected for magnetic variation.
    */
   public static correctMagvar(trueCourse: number, magneticVariation: number): number {
-    return trueCourse - GeoMath.normalizeMagVar(magneticVariation);
+      return trueCourse - GeoMath.normalizeMagVar(magneticVariation);
   }
 
   /**
@@ -67,7 +66,7 @@ export class GeoMath {
    * @returns The true course, corrected for magnetic variation.
    */
   public static removeMagvar(headingMagnetic: number, magneticVariation: number): number {
-    return headingMagnetic + GeoMath.normalizeMagVar(magneticVariation);
+      return headingMagnetic + GeoMath.normalizeMagVar(magneticVariation);
   }
 
   /**
@@ -76,15 +75,14 @@ export class GeoMath {
    * @returns A normalized magnetic variation.
    */
   private static normalizeMagVar(magneticVariation: number): number {
-    let normalizedMagVar: number;
-    if (magneticVariation <= 180) {
-      normalizedMagVar = magneticVariation;
-    }
-    else {
-      normalizedMagVar = magneticVariation - 360;
-    }
+      let normalizedMagVar: number;
+      if (magneticVariation <= 180) {
+          normalizedMagVar = magneticVariation;
+      } else {
+          normalizedMagVar = magneticVariation - 360;
+      }
 
-    return normalizedMagVar;
+      return normalizedMagVar;
   }
 
   /**
@@ -94,6 +92,6 @@ export class GeoMath {
    * @returns The magnetic variation at the specific latitude and longitude.
    */
   public static getMagvar(lat: number, lon: number): number {
-    return GeoMath.magneticModel.declination(0, lat, lon, 2020);
+      return GeoMath.magneticModel.declination(0, lat, lon, 2020);
   }
 }

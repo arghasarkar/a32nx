@@ -1,5 +1,5 @@
-import { FlightPlanManager } from "../flightplanning/FlightPlanManager"
-import {Leg, Geometry, TFLeg, Type1Transition, Transition} from "./Geometry";
+import { FlightPlanManager } from '../flightplanning/FlightPlanManager';
+import { Leg, Geometry, TFLeg, Type1Transition, Transition } from './Geometry';
 
 const mod = (x: number, n: number) => x - Math.floor(x / n) * n;
 
@@ -9,6 +9,7 @@ const mod = (x: number, n: number) => x - Math.floor(x / n) * n;
  */
 export class GuidanceManager {
     private lastTransition?: number;
+
     public flightPlanManager: FlightPlanManager;
 
     constructor(flightPlanManager: FlightPlanManager) {

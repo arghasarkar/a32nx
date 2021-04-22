@@ -22,58 +22,69 @@
  * SOFTWARE.
  */
 
-/// <reference path="../../../../../typings/fs-base-ui/html_ui/JS/simvar.d.ts" />
-
 declare class WayPoint {
     constructor(_baseInstrument: BaseInstrument);
 
     icao: string;
+
     ident: string;
+
     endsInDiscontinuity?: boolean;
+
     discontinuityCanBeCleared?: boolean;
+
     isVectors?: boolean;
+
     isRunway?: boolean;
+
     infos: WayPointInfo;
+
     type: string;
+
     bearingInFP: number;
+
     distanceInFP: number;
+
     cumulativeDistanceInFP: number;
+
     instrument: BaseInstrument;
+
     altDesc: number;
+
     altitude1: number;
+
     altitude2: number;
+
     legAltitudeDescription: number;
+
     legAltitude1: number;
+
     legAltitude2: number;
+
     additionalData: { [key: string]: any }
+
     _svgElements: any;
-}
-
-declare class BaseInstrument {
-    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-
-    facilityLoader: FacilityLoader;
-    instrumentIdentifier: string;
-}
-
-declare class NavSystem {
-}
-
-declare class FacilityLoader {
-    getFacilityRaw(icao: string, timeout?: number): Promise<any>;
 }
 
 declare class WayPointInfo {
     constructor(_instrument: BaseInstrument);
 
     coordinates: LatLongAlt;
+
     icao: string;
+
     ident: string;
+
     airwayIn: string;
+
     airwayOut: string;
+
     routes: any[];
+
     instrument: BaseInstrument;
+
     magneticVariation?: number;
+
     _svgElements: any;
 
     UpdateInfos(_CallBack?, loadFacilitiesTransitively?);
@@ -81,32 +92,21 @@ declare class WayPointInfo {
     CopyBaseInfosFrom(_WP: WayPoint);
 }
 
-interface RawApproachTransitionData {
-    legs: {}[],
-    name: string,
-    __Type: "JS_ApproachTransition",
-}
-
-interface RawApproachData {
-    finalLegs: {}[],
-    missedLegs: {}[],
-    icaos: any[],
-    index: number,
-    name?: string,
-    runway: string,
-    transitions: RawApproachTransitionData[],
-    __Type: "JS_Approach",
-}
-
 declare class AirportInfo extends WayPointInfo {
     constructor(_instrument: BaseInstrument);
 
     frequencies: any[];
+
     namedFrequencies: any[];
+
     departures: any[];
-    approaches: RawApproachData[];
+
+    approaches: MSFS.RawApproachData[];
+
     arrivals: any[];
+
     runways: any[];
+
     oneWayRunways: OneWayRunway[];
 
     UpdateNamedFrequencies(icao?: string): Promise<void>
@@ -141,32 +141,6 @@ declare interface EnrouteTransition {
     legs: ProcedureLeg[];
 }
 
-declare class Runway {
-}
-
-declare class Avionics {
-    static Utils: Utils;
-}
-
-declare class Utils {
-    computeGreatCircleHeading(coords1: LatLongAlt, coords2: LatLongAlt): number;
-
-    computeGreatCircleDistance(coords1: LatLongAlt, coords2: LatLongAlt): number;
-
-    bearingDistanceToCoordinates(bearing: number, distanceInNM: number, lat: number, long: number): LatLongAlt;
-
-    fmod(value: number, moduloBy: number): number;
-
-    computeDistance(coords1: LatLongAlt, coords2: LatLongAlt);
-
-    angleDiff(degrees1: number, degrees2: number);
-
-    lerpAngle(from: number, to: number, d: number);
-
-    DEG2RAD: number;
-    RAD2DEG: number;
-}
-
 declare interface ProcedureLeg {
     type: number;
     fixIcao: string;
@@ -180,14 +154,25 @@ declare interface ProcedureLeg {
     theta: number;
 }
 
-
-declare class EmptyCallback {
-    static Void: () => void;
-    static Boolean: (boolean) => void;
-}
-
-declare class Coherent {
-    static call(handler: string, ...params: any[]): Promise<any>
-}
-
 declare function RegisterViewListener(handler: string): void
+
+declare namespace MSFS {
+
+    interface RawApproachData {
+        finalLegs: ProcedureLeg[],
+        missedLegs: ProcedureLeg[],
+        icaos: string[],
+        index: number,
+        name?: string,
+        runway: string,
+        transitions: MSFS.RawApproachTransitionData[],
+        __Type: 'JS_Approach',
+    }
+
+    export interface RawApproachTransitionData {
+        legs: ProcedureLeg[],
+        name: string,
+        __Type: 'JS_ApproachTransition',
+    }
+
+}

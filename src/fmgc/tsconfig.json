@@ -2,9 +2,10 @@
   "compilerOptions": {
     "target": "ESNext",
     "noEmit": true,
-    "typeRoots": ["../../typings"],
+    "typeRoots": ["../../typings"]
   },
-  "filesGlob": [
+  "include": [
+    "src/**/*",
     "../../typings/**/*.d.ts"
   ]
 }

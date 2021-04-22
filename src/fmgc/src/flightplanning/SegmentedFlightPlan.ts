@@ -1,3 +1,6 @@
+// This is WIP
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /*
  * MIT License
  *
@@ -22,8 +25,8 @@
  * SOFTWARE.
  */
 
-import { ManagedFlightPlan } from "./ManagedFlightPlan";
-import { FlightPlanSegment } from "./FlightPlanSegment";
+import { ManagedFlightPlan } from './ManagedFlightPlan';
+import { FlightPlanSegment } from './FlightPlanSegment';
 
 /**
  * A segmented flight plan as defined by the reference.
@@ -111,7 +114,7 @@ export function getSegmentedFlightPlan(flightPlan: ManagedFlightPlan): Segmented
         // We have a departure - add a DepartureSegment
         segmented.departureSegment = {
             sid: planDeparture,
-            sidEnrouteTransitionIndex: flightPlan.procedureDetails.departureTransitionIndex
+            sidEnrouteTransitionIndex: flightPlan.procedureDetails.departureTransitionIndex,
         };
     }
 
@@ -123,7 +126,7 @@ export function getSegmentedFlightPlan(flightPlan: ManagedFlightPlan): Segmented
     segmented.arrivalSegment = {
         star: flightPlan.arrival,
         starEnrouteTransitionIndex: flightPlan.procedureDetails.arrivalTransitionIndex,
-        missedApproach: flightPlan.missed
+        missedApproach: flightPlan.missed,
     };
 
     return {

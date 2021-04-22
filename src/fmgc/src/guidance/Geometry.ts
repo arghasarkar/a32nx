@@ -1,5 +1,5 @@
-import { ControlLaw, GuidanceParameters } from "./ControlLaws";
-import { Degrees, NauticalMiles } from "../../../../typings/types";
+import { ControlLaw, GuidanceParameters } from './ControlLaws';
+import { Degrees, NauticalMiles } from '../../../../typings/types';
 
 export const EARTH_RADIUS_NM = 3440.1;
 const mod = (x: number, n: number) => x - Math.floor(x / n) * n;
@@ -12,12 +12,15 @@ export interface Guidable {
 
 export abstract class Leg implements Guidable {
     abstract getGuidanceParameters(ppos, trueTrack);
+
     abstract getDistanceToGo(ppos);
+
     abstract isAbeam(ppos);
 }
 
 export class TFLeg extends Leg {
     public from: WayPoint;
+
     public to: WayPoint;
 
     constructor(from: WayPoint, to: WayPoint) {
@@ -47,8 +50,8 @@ export class TFLeg extends Leg {
         const desiredOffset = 0;
         const actualOffset = (
             Math.asin(
-                Math.sin(Avionics.Utils.DEG2RAD * (distanceAC / EARTH_RADIUS_NM)) *
-                Math.sin(Avionics.Utils.DEG2RAD * (bearingAC - bearingAB))
+                Math.sin(Avionics.Utils.DEG2RAD * (distanceAC / EARTH_RADIUS_NM))
+                * Math.sin(Avionics.Utils.DEG2RAD * (bearingAC - bearingAB)),
             ) / Avionics.Utils.DEG2RAD
         ) * EARTH_RADIUS_NM;
         const crossTrackError = desiredOffset - actualOffset;
@@ -90,8 +93,11 @@ export class TFLeg extends Leg {
 
 export abstract class Transition implements Guidable {
     abstract isAbeam(ppos: LatLongAlt): boolean;
+
     abstract getGuidanceParameters(ppos, trueTrack);
+
     abstract getDistanceToGo(ppos);
+
     abstract getTrackDistanceToTerminationPoint(ppos: LatLongAlt): NauticalMiles;
 }
 
@@ -100,8 +106,11 @@ export abstract class Transition implements Guidable {
  */
 export class Type1Transition extends Transition {
     public previousLeg: TFLeg;
+
     public nextLeg: TFLeg;
+
     public radius: NauticalMiles;
+
     public clockwise: boolean;
 
     constructor(
@@ -144,8 +153,7 @@ export class Type1Transition extends Transition {
     }
 
     isAbeam(ppos: LatLongAlt): boolean {
-        const center = this.center;
-        const [inbound, outbound] = this.getTurningPoints();
+        const [inbound] = this.getTurningPoints();
 
         const bearingAC = Avionics.Utils.computeGreatCircleHeading(inbound, ppos);
         const headingAC = Math.abs(Avionics.Utils.angleDiff(this.previousLeg.bearing, bearingAC));
@@ -181,9 +189,10 @@ export class Type1Transition extends Transition {
 
     /**
      * Returns the distance to the termination point
-     * @param ppos
+     *
+     * @param _ppos
      */
-    getDistanceToGo(ppos: LatLongAlt): NauticalMiles {
+    getDistanceToGo(_ppos: LatLongAlt): NauticalMiles {
         return 0;
     }
 
@@ -206,7 +215,7 @@ export class Type1Transition extends Transition {
     }
 
     getGuidanceParameters(ppos: LatLongAlt, trueTrack: number): GuidanceParameters | null {
-        const center = this.center;
+        const { center } = this;
 
         const bearingPpos = Avionics.Utils.computeGreatCircleHeading(
             center,
@@ -240,13 +249,6 @@ export class Type1Transition extends Transition {
     toString(): string {
         return `Type1Transition<radius=${this.radius} clockwisew=${this.clockwise}>`;
     }
-}
-
-/**
- * A type II transition uses a smooth transition onto a fixed reference leg.
- */
-export class Type2Transition extends Transition {
-
 }
 
 export class Geometry {
