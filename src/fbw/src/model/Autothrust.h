@@ -25,8 +25,8 @@ class AutothrustModelClass {
     real_T prev_TLA_2;
     real_T eventTime;
     real_T eventTime_f;
-    athr_status pStatus;
     athr_mode pMode;
+    athr_status pStatus;
     boolean_T Delay_DSTATE_a;
     uint8_T icLoad;
     uint8_T icLoad_c;
@@ -107,6 +107,10 @@ class AutothrustModelClass {
     real_T RateLimiterVariableTs_up_m;
     real_T RateLimiterVariableTs_up_i;
     real_T RateLimiterVariableTs_up_in;
+    athr_mode CompareToConstant2_const_h;
+    athr_mode CompareToConstant3_const;
+    athr_mode CompareToConstant2_const_c;
+    athr_mode CompareToConstant3_const_k;
     athr_status CompareToConstant_const_d;
     boolean_T CompareToConstant1_const;
     boolean_T CompareToConstant_const_j;
