@@ -18,18 +18,21 @@ export const FuelPage = () => {
     const wingTotalRefuelTimeSeconds = 1020;
     const CenterTotalRefuelTimeSeconds = 180;
     const [usingMetrics, setUsingMetrics] = useSimVarSyncedPersistentProperty('L:A32NX_CONFIG_USING_METRIC_UNIT', 'Number', 'CONFIG_USING_METRIC_UNIT');
+
     const currentUnit = () => {
         if (usingMetrics === 1) {
             return 'KG';
         }
         return 'LB';
     };
+
     const convertUnit = () => {
         if (usingMetrics === 1) {
             return 1;
         }
         return 2.204617615;
     };
+
     const [galToKg] = useSimVar('FUEL WEIGHT PER GALLON', 'kilograms', 1_000);
     const outerCell = () => outerCellGallon * galToKg * convertUnit();
     const outerCells = () => outerCell() * 2;
@@ -59,6 +62,7 @@ export const FuelPage = () => {
     const [RInnCurrent] = useSimVar('FUEL TANK RIGHT MAIN QUANTITY', 'Gallons', 1_000);
     const [ROutCurrent] = useSimVar('FUEL TANK RIGHT AUX QUANTITY', 'Gallons', 1_000);
     const getFuelBarPercent = (curr:number, max: number) => (Math.max(curr, 0) / max) * 100;
+
     const airplaneCanRefuel = () => {
         // TODO : REMOVE THIS IF WHENEVER PERSISTANCE IS IMPLEMENTED
         if (usingMetrics !== 1) {
@@ -69,10 +73,12 @@ export const FuelPage = () => {
         }
         return true;
     };
+
     const currentWingFuel = () => round(Math.max((LInnCurrent + (LOutCurrent) + (RInnCurrent) + (ROutCurrent)), 0));
     const targetWingFuel = () => round(Math.max((LInnTarget + (LOutTarget) + (RInnTarget) + (ROutTarget)), 0));
     const convertToGallon = (curr : number) => curr * (1 / convertUnit()) * (1 / galToKg);
     const totalCurrentGallon = () => round(Math.max((LInnCurrent + (LOutCurrent) + (RInnCurrent) + (ROutCurrent) + (centerCurrent)), 0));
+
     const totalCurrent = () => {
         if (round(totalTarget) === totalCurrentGallon()) {
             return inputValue;
@@ -83,6 +89,7 @@ export const FuelPage = () => {
         }
         return val;
     };
+
     const formatRefuelStatusLabel = () => {
         if (airplaneCanRefuel()) {
             if (round(totalTarget) === totalCurrentGallon()) {
@@ -98,6 +105,7 @@ export const FuelPage = () => {
         }
         return '(Unavailable)';
     };
+
     const formatRefuelStatusClass = () => {
         if (airplaneCanRefuel()) {
             if (round(totalTarget) === totalCurrentGallon() || !refuelStartedByUser) {
@@ -110,12 +118,16 @@ export const FuelPage = () => {
         }
         return 'text-gray-400';
     };
+
     const getFuelMultiplier = () => galToKg * convertUnit();
+
     const formatFuelFilling = (curr: number, max: number) => {
         const percent = (Math.max(curr, 0) / max) * 100;
         return `linear-gradient(to top, #3b82f6 ${percent}%,#ffffff00 0%)`;
     };
+
     const convertFuelValue = (curr: number) => round(round(Math.max(curr, 0)) * getFuelMultiplier());
+
     const convertFuelValueCenter = (curr: number) => {
         if (curr < 1) {
             return 0;
@@ -125,6 +137,7 @@ export const FuelPage = () => {
         }
         return round(convertFuelValue(curr) + convertUnit());
     };
+
     const setDesiredFuel = (fuel: number) => {
         fuel -= (outerCellGallon) * 2;
         const outerTank = (((outerCellGallon) * 2) + Math.min(fuel, 0)) / 2;
@@ -146,6 +159,7 @@ export const FuelPage = () => {
         }
         setCenterTarget(fuel);
     };
+
     const updateDesiredFuel = (value:string) => {
         let fuel = 0;
         let originalFuel = 0;
@@ -164,6 +178,7 @@ export const FuelPage = () => {
         setSliderValue((fuel / totalFuelGallons) * 100);
         setDesiredFuel(fuel);
     };
+
     const updateSlider = (value: number) => {
         if (value < 2) {
             value = 0;
@@ -172,6 +187,7 @@ export const FuelPage = () => {
         const fuel = Math.round(totalFuel() * (value / 100));
         updateDesiredFuel(fuel.toString());
     };
+
     const calculateEta = () => {
         if (round(totalTarget) === totalCurrentGallon() || refuelRate === 2) {
             return ' 0';
@@ -190,11 +206,13 @@ export const FuelPage = () => {
         }
         return ` ${Math.round(estimatedTimeSeconds / 60)}`;
     };
+
     const switchRefuelState = () => {
         if (airplaneCanRefuel()) {
             setRefuelStartedByUser(!refuelStartedByUser);
         }
     };
+
     return (
         <div className="text-white mt-6 h-efb-nav flex flex-col justify-between">
             <div className="z-40">
@@ -383,16 +401,16 @@ export const FuelPage = () => {
             </div>
             <div className="flex flex-col items-center justify-end">
                 <img className="z-20 h-96 -mb-20" src={fuselage} />
-                <div className="z-0 w-24 h-20 absolute mb-ctr-tk-y" style={{ background: formatFuelFilling(centerCurrent, centerTankGallon) }} />
-                <div className="z-0 w-inr-tk h-36 absolute mb-inn-tk-y mr-inn-tk-x" style={{ background: formatFuelFilling(LInnCurrent, innerCellGallon) }} />
-                <div className="z-0 w-inr-tk h-36 absolute mb-inn-tk-y ml-inn-tk-x" style={{ background: formatFuelFilling(RInnCurrent, innerCellGallon) }} />
-                <div className="z-0 w-out-tk h-20 absolute mb-out-tk-y mr-out-tk-x" style={{ background: formatFuelFilling(LOutCurrent, outerCellGallon) }} />
-                <div className="z-0 w-out-tk h-20 absolute mb-out-tk-y ml-out-tk-x" style={{ background: formatFuelFilling(ROutCurrent, outerCellGallon) }} />
-                <div className="z-10 w-96 h-20 absolute bg-navy-regular mb-28 ml-overlay-b-x transform rotate-18.5" />
-                <div className="z-10 w-96 h-20 absolute bg-navy-regular mb-28 mr-overlay-b-x transform -rotate-18.5" />
-                <div className="z-10 w-96 h-24 absolute bg-navy-regular mb-overlay-t-y ml-overlay-t-x transform rotate-26.5" />
-                <div className="z-10 w-96 h-24 absolute bg-navy-regular mb-overlay-t-y mr-overlay-t-x transform -rotate-26.5" />
-                <div className="bg-navy-lighter rounded-2xl text-white shadow-lg mr-4 overflow-x-hidden p-6 z-30">
+                <div className="z-0 w-24 h-20 absolute bottom-ctr-tk-y" style={{ background: formatFuelFilling(centerCurrent, centerTankGallon) }} />
+                <div className="z-0 w-inr-tk h-36 absolute bottom-inn-tk-y left-inn-tk-l" style={{ background: formatFuelFilling(LInnCurrent, innerCellGallon) }} />
+                <div className="z-0 w-inr-tk h-36 absolute bottom-inn-tk-y right-inn-tk-r" style={{ background: formatFuelFilling(RInnCurrent, innerCellGallon) }} />
+                <div className="z-0 w-out-tk h-16 absolute bottom-out-tk-y left-out-tk-l" style={{ background: formatFuelFilling(LOutCurrent, outerCellGallon) }} />
+                <div className="z-0 w-out-tk h-16 absolute bottom-out-tk-y right-out-tk-r" style={{ background: formatFuelFilling(ROutCurrent, outerCellGallon) }} />
+                <div className="z-10 w-96 h-20 absolute bg-navy-regular bottom-overlay-b-y left-overlay-bl transform -rotate-18.5" />
+                <div className="z-10 w-96 h-20 absolute bg-navy-regular bottom-overlay-b-y right-overlay-br transform rotate-18.5" />
+                <div className="z-10 w-96 h-24 absolute bg-navy-regular bottom-overlay-t-y left-overlay-tl transform -rotate-26.5" />
+                <div className="z-10 w-96 h-24 absolute bg-navy-regular bottom-overlay-t-y right-overlay-tr transform rotate-26.5" />
+                <div className="bg-navy-lighter rounded-2xl text-white shadow-lg mr-4 overflow-x-hidden p-6 z-40">
                     <div className="w-96 flex flex-row justify-between items-center">
                         <span className="text-lg text-gray-300">Refuel Time</span>
                         <SelectGroup>

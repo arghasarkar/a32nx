@@ -18,15 +18,20 @@ module.exports = {
                 'efb': '50rem',
                 'efb-nav': '45.75rem'
             }),
-            margin: () => ({
-                'ctr-tk-y': '15.425rem',
-                'inn-tk-y': '11.25rem',
-                'inn-tk-x': '19.525rem',
-                'out-tk-y': '9.5rem',
-                'out-tk-x': '38.25rem',
-                'overlay-b-x': '27rem',
-                'overlay-t-x': '30.5rem',
-                'overlay-t-y': '14.75rem'
+            inset: () => ({
+                'ctr-tk-y': '18.75rem',
+                'inn-tk-y': '14.5rem',
+                'inn-tk-l': '31.5rem',
+                'inn-tk-r': '24.75rem',
+                'out-tk-y': '12.75rem',
+                'out-tk-l': '26.25rem',
+                'out-tk-r': '19.5rem',
+                'overlay-b-y': '10.25rem',
+                'overlay-bl': '22.5rem',
+                'overlay-br': '15.5rem',
+                'overlay-t-y': '18rem',
+                'overlay-tl': '21rem',
+                'overlay-tr': '14rem'
             }),
             rotate: () => ({
                 '18.5': '18.5deg',
