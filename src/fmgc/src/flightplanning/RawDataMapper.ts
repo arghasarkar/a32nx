@@ -134,8 +134,6 @@ export class RawDataMapper {
         case 3:
             name += 'C';
             break;
-        default:
-            throw new Error(`Invalid runway direction '${runwayTransition.runwayDesignation}'`);
         }
 
         return name;
