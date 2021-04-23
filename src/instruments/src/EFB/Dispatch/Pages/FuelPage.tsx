@@ -197,7 +197,7 @@ export const FuelPage = () => {
     };
     return (
         <div className="text-white mt-6 h-efb-nav flex flex-col justify-between">
-            <div>
+            <div className="z-40">
                 <div className="flex flex-row w-full">
                     <div className="w-1/3 mr-3">
                         <div className="bg-navy-lighter rounded-2xl p-6 text-white shadow-lg overflow-x-hidden">
@@ -309,7 +309,7 @@ export const FuelPage = () => {
                             </div>
                             <div className="flex mt-4 mb-2 items-center">
                                 <div className="fuel-progress">
-                                    <Slider value={sliderValue} onInput={(value) => updateSlider(value)} className="w-48" />
+                                    <Slider value={sliderValue} onInput={(value) => updateSlider(value)} className="w-48 mr-4" />
                                 </div>
                                 <div className="fuel-label pad15">
                                     <SimpleInput
@@ -382,13 +382,17 @@ export const FuelPage = () => {
                 </div>
             </div>
             <div className="flex flex-col items-center justify-end">
-                <img className="h-96 -mb-20" src={fuselage} />
-                <div className="wrapper visible-tank center-tank" style={{ background: formatFuelFilling(400, centerTankGallon) }} />
-                <div className="wrapper visible-tank inner-left-tank" style={{ background: formatFuelFilling(400, innerCellGallon) }} />
-                <div className="wrapper visible-tank inner-right-tank" style={{ background: formatFuelFilling(400, innerCellGallon) }} />
-                <div className="wrapper visible-tank outer-left-tank" style={{ background: formatFuelFilling(400, outerCellGallon) }} />
-                <div className="wrapper visible-tank outer-right-tank" style={{ background: formatFuelFilling(400, outerCellGallon) }} />
-                <div className="bg-navy-lighter rounded-2xl text-white shadow-lg mr-4 overflow-x-hidden p-6">
+                <img className="z-20 h-96 -mb-20" src={fuselage} />
+                <div className="z-0 w-24 h-20 absolute mb-ctr-tk-y" style={{ background: formatFuelFilling(centerCurrent, centerTankGallon) }} />
+                <div className="z-0 w-inr-tk h-36 absolute mb-inn-tk-y mr-inn-tk-x" style={{ background: formatFuelFilling(LInnCurrent, innerCellGallon) }} />
+                <div className="z-0 w-inr-tk h-36 absolute mb-inn-tk-y ml-inn-tk-x" style={{ background: formatFuelFilling(RInnCurrent, innerCellGallon) }} />
+                <div className="z-0 w-out-tk h-20 absolute mb-out-tk-y mr-out-tk-x" style={{ background: formatFuelFilling(LOutCurrent, outerCellGallon) }} />
+                <div className="z-0 w-out-tk h-20 absolute mb-out-tk-y ml-out-tk-x" style={{ background: formatFuelFilling(ROutCurrent, outerCellGallon) }} />
+                <div className="z-10 w-96 h-20 absolute bg-navy-regular mb-28 ml-overlay-b-x transform rotate-18.5" />
+                <div className="z-10 w-96 h-20 absolute bg-navy-regular mb-28 mr-overlay-b-x transform -rotate-18.5" />
+                <div className="z-10 w-96 h-24 absolute bg-navy-regular mb-overlay-t-y ml-overlay-t-x transform rotate-26.5" />
+                <div className="z-10 w-96 h-24 absolute bg-navy-regular mb-overlay-t-y mr-overlay-t-x transform -rotate-26.5" />
+                <div className="bg-navy-lighter rounded-2xl text-white shadow-lg mr-4 overflow-x-hidden p-6 z-30">
                     <div className="w-96 flex flex-row justify-between items-center">
                         <span className="text-lg text-gray-300">Refuel Time</span>
                         <SelectGroup>
@@ -398,10 +402,6 @@ export const FuelPage = () => {
                         </SelectGroup>
                     </div>
                 </div>
-                <div className="wrapper hiding-block hiding-block-top-left" />
-                <div className="wrapper hiding-block hiding-block-bottom-left" />
-                <div className="wrapper hiding-block hiding-block-top-right" />
-                <div className="wrapper hiding-block hiding-block-bottom-right" />
             </div>
         </div>
     );

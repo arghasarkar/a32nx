@@ -319,7 +319,7 @@ const FlyPadSettings = () => {
     const [brightness, setBrightness] = useSimVarSyncedPersistentProperty('L:A32NX_EFB_BRIGHTNESS', 'number', 'EFB_BRIGHTNESS');
 
     return (
-        <div className="bg-navy-lighter divide-y divide-gray-700 flex flex-col rounded-xl p-6 shadow-2xl mb-6">
+        <div className="bg-navy-lighter divide-y divide-gray-700 flex flex-col rounded-xl p-6 shadow-lg mb-6">
             <div className="flex flex-row justify-between items-center">
                 <span className="text-lg text-gray-300">Brightness</span>
                 <Slider className="w-60" value={brightness} onInput={(value) => setBrightness(value)} />
